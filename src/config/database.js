@@ -13,8 +13,8 @@ if (process.env.DATABASE_URL) {
         connectionString:
         process.env.DATABASE_URL,
 
-        ssl: {
-            rejectUnauthorized: false
+        ssl:{
+            rejectUnauthorized:false
         }
 
     });
@@ -44,7 +44,7 @@ if (process.env.DATABASE_URL) {
 
 pool.connect()
 
-.then(client => {
+.then(client=>{
 
     console.log("✅ PostgreSQL Connected");
 
@@ -53,7 +53,7 @@ pool.connect()
 })
 
 
-.catch(err => {
+.catch(err=>{
 
     console.error(
         "❌ Database Connection Error"
