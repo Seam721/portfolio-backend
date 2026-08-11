@@ -1,13 +1,17 @@
 const pool = require("../config/database");
 
 
+// ========================================
 // CREATE SKILL
+// ========================================
+
 const createSkill = async (data) => {
 
     const {
         name,
         category,
         level,
+        proficiency,
         icon
     } = data;
 
@@ -19,16 +23,18 @@ const createSkill = async (data) => {
             name,
             category,
             level,
+            proficiency,
             icon
         )
-        VALUES($1,$2,$3,$4)
+        VALUES($1,$2,$3,$4,$5)
         RETURNING *
         `,
         [
             name,
             category,
             level,
-            icon
+            Number(proficiency || 0),
+            icon || null
         ]
     );
 
@@ -38,8 +44,10 @@ const createSkill = async (data) => {
 };
 
 
-
+// ========================================
 // GET ALL SKILLS
+// ========================================
+
 const getSkills = async () => {
 
     const result = await pool.query(
@@ -56,8 +64,10 @@ const getSkills = async () => {
 };
 
 
-
+// ========================================
 // GET SINGLE SKILL
+// ========================================
+
 const getSkillById = async (id) => {
 
     const result = await pool.query(
@@ -75,14 +85,17 @@ const getSkillById = async (id) => {
 };
 
 
-
+// ========================================
 // UPDATE SKILL
-const updateSkill = async(id,data)=>{
+// ========================================
+
+const updateSkill = async (id, data) => {
 
     const {
         name,
         category,
         level,
+        proficiency,
         icon
     } = data;
 
@@ -91,18 +104,21 @@ const updateSkill = async(id,data)=>{
         `
         UPDATE skills
         SET
-        name=$1,
-        category=$2,
-        level=$3,
-        icon=$4
-        WHERE id=$5
+            name=$1,
+            category=$2,
+            level=$3,
+            proficiency=$4,
+            icon=$5,
+            updated_at=NOW()
+        WHERE id=$6
         RETURNING *
         `,
         [
             name,
             category,
             level,
-            icon,
+            Number(proficiency || 0),
+            icon || null,
             id
         ]
     );
@@ -113,9 +129,11 @@ const updateSkill = async(id,data)=>{
 };
 
 
-
+// ========================================
 // DELETE SKILL
-const deleteSkill = async(id)=>{
+// ========================================
+
+const deleteSkill = async (id) => {
 
     await pool.query(
         `
@@ -125,11 +143,14 @@ const deleteSkill = async(id)=>{
         [id]
     );
 
-
 };
 
 
-module.exports={
+// ========================================
+// EXPORT
+// ========================================
+
+module.exports = {
     createSkill,
     getSkills,
     getSkillById,
