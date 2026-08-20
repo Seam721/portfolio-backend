@@ -2,32 +2,48 @@ const express = require("express");
 
 const router = express.Router();
 
+
 const {
+
     addProject,
+
     getAllProjects,
+
+    getFeatured,
+
     getSingleProject,
+
     editProject,
+
     removeProject
+
 } = require("../controllers/projectController");
 
 
 const authenticateToken =
-require("../middleware/authMiddleware");
+    require("../middleware/authMiddleware");
 
 
 
-// ==========================
-// PUBLIC PROJECT ROUTES
-// ==========================
+// =====================================================
+// PUBLIC ROUTES
+// =====================================================
+
+// Featured projects
+router.get(
+    "/featured",
+    getFeatured
+);
 
 
-// Website
+// All projects
 router.get(
     "/",
     getAllProjects
 );
 
 
+// Single project
 router.get(
     "/:id",
     getSingleProject
@@ -35,10 +51,9 @@ router.get(
 
 
 
-// ==========================
-// ADMIN PROJECT ROUTES
-// ==========================
-
+// =====================================================
+// ADMIN ROUTES
+// =====================================================
 
 // Create
 router.post(
@@ -62,7 +77,6 @@ router.delete(
     authenticateToken,
     removeProject
 );
-
 
 
 module.exports = router;
